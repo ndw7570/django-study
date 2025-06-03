@@ -37,3 +37,15 @@ class HelloApiView(APIView): # APIView는 Django의 RESTful API를 만들기 쉽
                 serializer.errors,
                 status=status.HTTP_400_BAD_REQUEST
             )
+
+    def put(self, request, pk=None): # 전체 리소스 교체(name, description, price)
+        """Handle updating an object""" # doc string: 함수, 클래스, 모듈의 첫 줄로 런타임시 접근 가능
+        return Response({'method': 'PUT'})
+
+    def patch(self, request, pk=None): # 일부 필드만 수정( price : 150 )
+        """Handle a partial update of an object"""
+        return Response({'method': 'PATCH'})
+
+    def delete(self, request, pk=None):
+        """Delete an object"""
+        return Response({'method': 'DELETE'})
