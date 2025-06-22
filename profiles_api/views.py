@@ -5,9 +5,11 @@ from django.shortcuts import render
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status, viewsets
+from rest_framework.authentication import TokenAuthentication
 
 from profiles_api import serializers
 from profiles_api import models
+from profiles_api import permissions
 
 # Django REST framework (DRF)
 class HelloApiView(APIView): # APIView는 Django의 RESTful API를 만들기 쉽게 도와주는, JSON 형식의 응답을 주는 API 뷰 (HTML을 보여주는 뷰가 아니라)
@@ -100,4 +102,5 @@ class UserProfileViewSet(viewsets.ModelViewSet):
     """Handle creating and updating profiles"""
     serializer_class = serializers.UserProfileSerializer
     queryset = models.UserProfile.objects.all()
-
+    authentication_classes = (TokenAuthentication, ) # unique 해야 함으로 튜플 사용 # => Authentication
+    permission_classes = (permissions.UpdateOwnProfile, ) # => Authorization
