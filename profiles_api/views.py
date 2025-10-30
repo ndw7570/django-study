@@ -12,9 +12,9 @@ from profiles_api import models
 from profiles_api import permissions
 
 # Django REST framework (DRF)
-class HelloApiView(APIView): # APIView는 Django의 RESTful API를 만들기 쉽게 도와주는, JSON 형식의 응답을 주는 API 뷰 (HTML을 보여주는 뷰가 아니라)
+class HelloApiView(APIView): # APIView는 자유롭게(ViewSet과는 다르게) JSON 형식의 응답을 주는 API 뷰 (HTML을 보여주는 뷰가 아니라)
     """Test API View"""
-    serializer_class = serializers.HelloSerializer
+    serializer_class = serializers.NamTestHelloMessageSerializer
 
     def get(self, request, format=None): # format=None(DRF)은 Accept 헤더나 .json, .api 같은 URL 확장자를 통해 응답 포맷을 자동으로 처리
         """Returns a list of APIView features"""
@@ -30,10 +30,12 @@ class HelloApiView(APIView): # APIView는 Django의 RESTful API를 만들기 쉽
     def post(self, request): # 함수 내에서 self 변수(serializer_class)를 사용하지 않아도 되지만, 정의는 반드시 있어야 함.
         """Create a hello message with our name"""
         serializer = self.serializer_class(data=request.data) #
+        print(type(self.serializer_class))
 
         if serializer.is_valid():
             name = serializer.validated_data.get('name')
             message = f'Hello {name}'
+            serializer.save()
             return Response({'message' : message})
         else:
             return Response(
